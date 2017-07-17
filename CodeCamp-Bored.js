@@ -6,6 +6,9 @@ module.exports = {
         timeout: 15000,
     },
 
+    /**
+     * @param {Object} Slack
+     */
     bored: function(Slack) {
         // *********************************************************************
         // CODE HERE!

@@ -1,6 +1,9 @@
 'use strict';
 
 module.exports = {
+    /**
+     * @param {Object} Slack
+     */
     logged_in: function(Slack) {
         // *********************************************************************
         // CODE HERE!

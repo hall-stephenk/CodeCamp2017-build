@@ -1,12 +1,16 @@
 'use strict';
 module.exports = {
+    /**
+     * @param {string} channelName
+     * @param {string} userName
+     * @param {Object} Slack
+     */
     shutdown_received: function(channelName, userName, Slack) {
         // *********************************************************************
         // CODE HERE!
         // *********************************************************************
 
-        Slack.postMessageToUser(userName, "Your wish is my command...shutting down now.");
-        Slack.postMessageToChannel(channelName, "See you later!");
+        Slack.postMessageToChannel(channelName, "Shutdown received.");
 
         // *********************************************************************
         // STOP CODING!
