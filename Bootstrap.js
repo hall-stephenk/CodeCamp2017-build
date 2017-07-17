@@ -33,8 +33,13 @@ var fs = require('fs'); // file system - allows reading and writing files
 
 var SlackBot = require('slackbots'); // the main SlackBots API module
 
-// This is the file you'll be working in! 
-var CodeCamp = require('./CodeCamp'); // load the Code Camp Module
+// These are the files you'll be working in! 
+var CodeCampBored = require('./CodeCamp-Bored'); // load the Code Camp Module
+var CodeCampLoggedIn = require('./CodeCamp-LoggedIn'); // load the Code Camp Module
+var CodeCampMemory = require('./CodeCamp-Memory'); // load the Code Camp Module
+var CodeCampMessage = require('./CodeCamp-Message'); // load the Code Camp Module
+var CodeCampQuestion = require('./CodeCamp-Question'); // load the Code Camp Module
+var CodeCampShutdown = require('./CodeCamp-Shutdown'); // load the Code Camp Module
 
 // stores users and channels available on this team
 var slackUsers = [];
@@ -42,8 +47,8 @@ var slackChannels = [];
 
 // Creates a new instance of the Slackbots API using the API Token and Name set in your bot's Personality File
 var Bot = new SlackBot({
-    token: CodeCamp.botData.apiTokenParts.join('-'),
-    name: CodeCamp.botData.name.botName,
+    token: CodeCampMemory.botData.apiTokenParts.join('-'),
+    name: CodeCampMemory.botData.name.botName,
 });
 
 /*  
@@ -54,7 +59,7 @@ var Bot = new SlackBot({
 
 Bot.on('start', function() {
     Logger.debug(sourceFile, 'Bot.on(start)', 'Bot has logged in.');
-    CodeCamp.logged_in(Bot);
+    CodeCampLoggedIn.logged_in(Bot);
 });
 
 Bot.on('message', function(data) {
@@ -72,7 +77,7 @@ Bot.on('message', function(data) {
     }
 
     // bail out if message was posted by our bot
-    if (user == CodeCamp.botData.name.botName) {
+    if (user == CodeCampMemory.botData.name.botName) {
         return;
     }
 
@@ -96,15 +101,15 @@ Bot.on('message', function(data) {
             break;
         case 'message':
             // bail out if user is the message sender    
-            if (user != CodeCamp.botData.name.botName) {
-                if (message == CodeCamp.botData.killPhrase) {
-                    CodeCamp.shutdown_received(channel, user, Bot);
+            if (user != CodeCampMemory.botData.name.botName) {
+                if (message == CodeCampMemory.botData.killPhrase) {
+                    CodeCampShutdown.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
                 } else {
                     if (message.indexOf('?') > 0) {
-                        CodeCamp.question_received(message, channel, user, Bot); 
+                        CodeCampQuestion.question_received(message, channel, user, Bot); 
                     } else {
-                        CodeCamp.message_received(message, channel, user, Bot);
+                        CodeCampMessage.message_received(message, channel, user, Bot);
                     }
                     createBoredomTimer();
                 }
@@ -192,12 +197,12 @@ function searchArray(array, id) {
 // timer for boredom detection
 var boredomTimer = null;
 function boredomHandler() {
-    boredomTimer = setTimeout(boredomHandler, CodeCamp.botData.general.boredomTimer);
-    CodeCamp.bored(Bot);
+    boredomTimer = setTimeout(boredomHandler, CodeCampBored.settings.timeout);
+    CodeCampBored.bored(Bot);
 }
 
 function createBoredomTimer() {
-    if (false == CodeCamp.botData.general.boredomTimerActive) {
+    if (false == CodeCampBored.settings.enabled) {
         return;
     }
 
@@ -206,14 +211,14 @@ function createBoredomTimer() {
         boredomTimer = null;
     }
 
-    boredomTimer = setTimeout(boredomHandler, CodeCamp.botData.general.boredomTimer);
+    boredomTimer = setTimeout(boredomHandler, CodeCampBored.settings.timeout);
 }
 
 /**
  * Backup and save data and exit the process. 
  */
 function shutdown() {
-    var data = JSON.stringify(CodeCamp.botData, null, '\t');
+    var data = JSON.stringify(CodeCampMemory.botData, null, '\t');
 
     // backup the bot file first...
     fs.writeFileSync('data/bot.json.bak.' + Date.now(), fs.readFileSync('data/bot.json'));
