@@ -98,18 +98,17 @@ Bot.on('message', function(data) {
             // bail out if user is the message sender    
             if (user != CodeCamp.botData.name.botName) {
                 if (message == CodeCamp.botData.killPhrase) {
-                    CodeCamp.shutdown_received(message, channel, user, Bot);
+                    CodeCamp.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
-                }
-
-                if (message.indexOf('?') > 0) {
-                    CodeCamp.question_received(message, channel, user, Bot);
                 } else {
-                    CodeCamp.message_received(message, channel, user, Bot);
+                    if (message.indexOf('?') > 0) {
+                        CodeCamp.question_received(message, channel, user, Bot); 
+                    } else {
+                        CodeCamp.message_received(message, channel, user, Bot);
+                    }
+                    createBoredomTimer();
                 }
             }
-
-            createBoredomTimer();
             break;
         case 'presence_change':
             break;
