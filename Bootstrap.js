@@ -1,7 +1,6 @@
 'use strict';
 
 delete require.cache['LogHelper.js'];
-delete require.cache['CodeCamp.js'];
 delete require.cache['data/bot.json'];
 
 /*
@@ -35,6 +34,7 @@ var SlackBot = require('slackbots'); // the main SlackBots API module
 
 // These are the files you'll be working in! 
 var CodeCampBored = require('./CodeCamp-Bored'); // load the Code Camp Module
+var CodeCampHelp = require('./CodeCamp-Help'); // load the Code Camp Module
 var CodeCampLoggedIn = require('./CodeCamp-LoggedIn'); // load the Code Camp Module
 var CodeCampMemory = require('./CodeCamp-Memory'); // load the Code Camp Module
 var CodeCampMessage = require('./CodeCamp-Message'); // load the Code Camp Module
@@ -106,7 +106,9 @@ Bot.on('message', function(data) {
                     CodeCampShutdown.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
                 } else {
-                    if (message.indexOf('?') > 0) {
+                    if (message.indexOf('help') >= 0) {
+                        CodeCampHelp.asked_for_help(message, channel, user, Bot);
+                    } else if (message.indexOf('?') > 0) {
                         CodeCampQuestion.question_received(message, channel, user, Bot); 
                     } else {
                         CodeCampMessage.message_received(message, channel, user, Bot);
