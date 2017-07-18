@@ -84,7 +84,6 @@ Bot.on('message', function(data) {
     // get the channel name
     if (data.channel) {
         channel = getNameFromId('channels', slackChannels, data.channel);
-        CodeCampMemory.botData.history.lastChannel = channel;
     }
 
     // set a local text reference 
@@ -103,6 +102,9 @@ Bot.on('message', function(data) {
         case 'message':
             // bail out if user is the message sender    
             if (user != CodeCampMemory.botData.name.botName) {
+                // store the last channel a message was received in
+                CodeCampMemory.botData.history.lastChannel = channel;
+
                 if (message == CodeCampMemory.botData.killPhrase) {
                     CodeCampShutdown.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
