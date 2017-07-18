@@ -59,7 +59,7 @@ var Bot = new SlackBot({
 
 Bot.on('start', function() {
     Logger.debug(sourceFile, 'Bot.on(start)', 'Bot has logged in.');
-    CodeCampLoggedIn.logged_in(Bot);
+    CodeCampLoggedIn.logged_in(getLastChannel(), Bot);
 });
 
 Bot.on('message', function(data) {
@@ -84,6 +84,7 @@ Bot.on('message', function(data) {
     // get the channel name
     if (data.channel) {
         channel = getNameFromId('channels', slackChannels, data.channel);
+        CodeCampMemory.botData.history.lastChannel = channel;
     }
 
     // set a local text reference 
@@ -196,11 +197,18 @@ function searchArray(array, id) {
     return '';
 }
 
+// gets the last channel from botData
+function getLastChannel() {
+    return CodeCampMemory.botData.history.lastChannel != '' ?
+        CodeCampMemory.botData.history.lastChannel :
+        CodeCampMemory.botData.general.defaultChannel;
+}
+
 // timer for boredom detection
 var boredomTimer = null;
 function boredomHandler() {
-    boredomTimer = setTimeout(boredomHandler, CodeCampBored.settings.timeout);
-    CodeCampBored.bored(Bot);
+    boredomTimer = setTimeout(boredomHandler, CodeCampBored.settings.timeoutInSeconds * 1000);
+    CodeCampBored.bored(getLastChannel(), Bot);
 }
 
 function createBoredomTimer() {
@@ -213,7 +221,7 @@ function createBoredomTimer() {
         boredomTimer = null;
     }
 
-    boredomTimer = setTimeout(boredomHandler, CodeCampBored.settings.timeout);
+    boredomTimer = setTimeout(boredomHandler, CodeCampBored.settings.timeoutInSeconds * 1000);
 }
 
 /**

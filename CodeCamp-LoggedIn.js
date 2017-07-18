@@ -2,14 +2,15 @@
 
 module.exports = {
     /**
+     * @param {string} channel
      * @param {Object} Slack
      */
-    logged_in: function(Slack) {
+    logged_in: function(channel, Slack) {
         // *********************************************************************
         // CODE HERE!
         // *********************************************************************
 
-        return;
+        Slack.postMessageToChannel(channel, "I'm back!");
 
         // *********************************************************************
         // STOP CODING!

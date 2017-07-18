@@ -7,7 +7,7 @@
 	"killPhrase": "go chase your tail",
 	"history": {
 		"lastConnect": "7/16/2017 3:26:51 PM",
-		"lastChannel": "stephen_test",
+		"lastChannel": "",
 		"lastMention": {
 			"user": "",
 			"message": "",
@@ -16,7 +16,7 @@
 	},
 	"general": {
 		"postCount": 135,
-		"defaultChannel": "stephen_test"
+		"defaultChannel": "general"
 	},
 	"name": {
 		"botName": "roofus",

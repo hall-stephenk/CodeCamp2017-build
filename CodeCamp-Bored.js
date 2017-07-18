@@ -2,19 +2,20 @@
 
 module.exports = {
     settings: {
-        enabled: false,
-        timeout: 15000,
+        enabled: true,
+        timeoutInSeconds: 15,
     },
 
     /**
+     * @param {string} channel
      * @param {Object} Slack
      */
-    bored: function(Slack) {
+    bored: function(channel, Slack) {
         // *********************************************************************
         // CODE HERE!
         // *********************************************************************
 
-        return;
+        Slack.postMessageToChannel(channel, 'What are you waiting for?');
 
         // *********************************************************************
         // STOP CODING!
