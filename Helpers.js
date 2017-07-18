@@ -14,8 +14,12 @@ module.exports = {
         fs.writeFileSync('./data/' + filename, data);
     },
 
-    readDataFromFile: function(filename, data) {
+    readDataFromFile: function(filename) {
         var fs = require('fs');
-        data = fs.readFileSync('./data/' + filename, 'utf8');
+        var data = null;
+        if (fs.existsSync('./data/' + filename)) {
+            data = fs.readFileSync('./data/' + filename, 'utf8')
+        }
+        return data;
     },
 };
