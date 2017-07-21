@@ -110,7 +110,7 @@ Bot.on('message', function(data) {
                     return;
                 }
 
-                if (message == CodeCampMemory.botData.killPhrase) {
+                if (message == CodeCampMemory.botData.killPhrase || message.toLowerCase() == CodeCampMemory.botData.killPhrase) {
                     CodeCampShutdown.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
                 } else {
