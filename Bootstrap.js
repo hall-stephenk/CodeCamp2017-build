@@ -105,6 +105,11 @@ Bot.on('message', function(data) {
                 // store the last channel a message was received in
                 CodeCampMemory.botData.history.lastChannel = channel;
 
+                // bail out of encountering an empty or undefined message
+                if (message == undefined || message == '') {
+                    return;
+                }
+
                 if (message == CodeCampMemory.botData.killPhrase) {
                     CodeCampShutdown.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
