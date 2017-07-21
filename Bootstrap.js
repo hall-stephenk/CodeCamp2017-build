@@ -114,9 +114,9 @@ Bot.on('message', function(data) {
                     CodeCampShutdown.shutdown_received(channel, user, Bot);
                     setTimeout(shutdown, 2500);
                 } else {
-                    if (message.indexOf('help') >= 0) {
+                    if (message.toLowerCase().includes('help')) {
                         CodeCampHelp.asked_for_help(message, channel, user, Bot);
-                    } else if (message.indexOf('?') > 0) {
+                    } else if (message.endsWith('?') > 0) {
                         CodeCampQuestion.question_received(message, channel, user, Bot); 
                     } else {
                         CodeCampMessage.message_received(message, channel, user, Bot);
